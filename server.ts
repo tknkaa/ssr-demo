@@ -5,13 +5,7 @@ import { render } from './dist/server/entry-server.js'
 const app = new Hono()
 const template = await Bun.file('./dist/client/index.html').text()
 
-app.use(
-  '*',
-  serveStatic({
-    root: './dist/client',
-    rewriteRequestPath: (path) => (path === '/' ? '/__skip-static-root__' : path),
-  }),
-)
+app.use('/assets/*', serveStatic({ root: './dist/client' }))
 
 app.get('*', (c) => {
   const html = render()
